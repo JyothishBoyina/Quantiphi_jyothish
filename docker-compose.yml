@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./bank-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    # Wait for DB if you switch to MySQL/Postgres. Not needed for H2 in-memory.
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+
+  frontend:
+    build:
+      context: ./bank-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
